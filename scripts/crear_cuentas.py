@@ -3,29 +3,36 @@ import random
 import string
 import sqlite3
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from datetime import datetime
-import requests
 
 # Configuración de Selenium con Browserless
 api_key = "2SUgwMA2mjrTcs2dc52850194106b52f224de7b71096e6992"  # Tu clave de API de Browserless
-browserless_url = f"https://production-sfo.browserless.io?token={api_key}"
+browserless_url = "https://chrome.browserless.io/webdriver"  # URL pública de Browserless para WebDriver
 
 options = Options()
 options.add_argument("--headless")  # Ejecutar en modo headless (sin interfaz gráfica)
 options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
 
-# Usar la URL de Browserless
-driver = webdriver.Remote(
-    command_executor=browserless_url,
-    options=options
-)
+# Incluir la clave de API en los encabezados HTTP de la solicitud
+options.add_argument(f'--proxy-server={browserless_url}')
+options.add_argument(f'--header=Authorization: Bearer {api_key}')  # Pasar la clave de API correctamente
+
+# Usar Selenium con Browserless
+try:
+    driver = webdriver.Remote(
+        command_executor=browserless_url,
+        options=options,
+        keep_alive=True  # Mantener la conexión activa
+    )
+except Exception as e:
+    print(f"Error al conectar con Browserless: {e}")
+    exit()
 
 # Listas de nombres y apellidos comunes
 nombres = ["Juan", "Carlos", "Maria", "Ana", "Pedro", "Luis", "Jose", "Laura", "Jorge", "Sofia"]
