@@ -1,0 +1,21 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.log
+*.sqlite3
+*.db
+*.tar.gz
+
+# ChromeDriver
+chromedriver.exe
+
+# VS Code settings
+.vscode/
+
+# Environments
+env/
+venv/
+
+# Sistema
+.DS_Store
+Thumbs.db
